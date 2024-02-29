@@ -6,7 +6,7 @@
     <div class="row">
         @foreach ($categories as $category)
             <div class="col">
-                <a class="btn btn-dark text-white border-light" href="#{{ $category }}">{{ $category }}</a>
+                <a class="btn btn-outline-light" href="#{{ $category }}">{{ $category }}</a>
             </div>
         @endforeach
     </div>
@@ -16,7 +16,7 @@
             <h2 class="text-white text-decoration-none">Category: {{ $category }}</h2>
             <ul class="list-unstyled text-decoration-none">
                 @forelse ($gamesByCategory[$category] as $game)
-                    <li class="text-white"><a class="btn btn-dark text-white border-light m-1" href="{{ route('showGame', $game->id) }}">{{ $game->name }}</a></li>
+                    <li class="text-white"><a class="btn btn-outline-light" href="{{ route('showGame', $game->id) }}">{{ $game->name }}</a></li>
                 @empty
                     <li class="text-white">No games available in this category.</li>
                 @endforelse

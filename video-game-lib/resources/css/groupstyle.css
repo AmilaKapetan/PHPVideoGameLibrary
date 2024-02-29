@@ -3,6 +3,11 @@ body{
     color: white;
 }
 
+.light-mode {
+    background-color: white;
+    color:  #212121;
+}
+
 .textstyle{
     font: Helvetica Neue;
     font-weight: bold;

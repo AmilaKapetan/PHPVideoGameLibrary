@@ -11,20 +11,20 @@
     <div class="category_placement content_placement textstyle">
         <div class="search_placement login_box content_placement textstyle">
             <div class="logintext_placement1 textstyle">
-                <p class="">
+                <p id= "enterInfo">
                     Please enter your Login Information here.
                 </p>
             @if(auth()->check())
                 <p>Logged in</p>
             @else
-                <p>Logged out</p>
+                <p id= "loggedOut1">Logged out</p>
             @endif
 
-            <form method="post" action="/account/login">
+            <form method="post" id="signinForm">
                 @csrf
                 <input type="text" name="username" placeholder="Username" required>
                 <input type="password" name="password" placeholder="Password" required>
-                <button type="submit">Login</button>
+                <button id="signinSubmit">Login</button>
             </form>
 
             @if(auth()->check())
@@ -34,7 +34,7 @@
                     <button type="submit">Logout</button>
                 </form>
             @else
-                <p>Logged out</p>
+                <p id= "loggedOut2">Logged out</p>
             @endif
 
             @if ($errors->has('login'))
@@ -74,4 +74,43 @@
     </div>
 </section>
 
+<script> 
+
+    $( "#signinSubmit" ).click(function (e) {
+        e.preventDefault();
+        var data=$( "#signinForm" ).get(0);
+
+        $.ajax({
+            type: "POST", 
+            url: "/account/login",
+            headers: { 'X-CSRF-Token': '{!! csrf_token() !!}' }, 
+            processData: false, 
+            contentType: false,
+            enctype: 'multipart/form-data',
+            data: new FormData(data),
+            success: function (response){
+                //console.log(response);
+                var parsedResponse= $.parseHTML(response);
+                  //var error= parsedResponse.find( ".alert" );
+                  var error= $(parsedResponse).find( ".alert" );
+                  console.log(parsedResponse);
+                  if(error.length>0){
+                    alert ( "Wrong Username or Password" );
+                  }
+                  else {
+                    alert ( "Logged In" );
+                    $( "#signinForm" ).hide();
+                    $( "#enterInfo" ).hide();
+                    $( "#loggedOut1" ).text( "Logged In" );
+                    $( "#loggedOut2" ).hide();
+                  }
+            },
+
+            error: function (xhr, status, error){
+                console.error(xhr.responseText);
+            }
+        });
+    });
+
+</script>
 
